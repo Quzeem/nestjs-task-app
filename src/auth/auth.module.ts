@@ -15,7 +15,7 @@ import { UserRepository } from './user.repository';
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
         secret: config.get<string>('JWT_SECRET_KEY'),
-        signOptions: { expiresIn: 3600 },
+        signOptions: { expiresIn: config.get<string>('JWT_EXPIRES_IN') },
       }),
     }),
     TypeOrmModule.forFeature([UserRepository]),

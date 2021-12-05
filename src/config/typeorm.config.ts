@@ -4,11 +4,11 @@ export default (): TypeOrmModuleOptions => {
   return {
     type: 'postgres',
     host: process.env.DB_HOST,
-    port: 5432,
+    port: parseInt(process.env.DB_PORT),
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-    synchronize: true, // Should not be used in production - otherwise you can lose production data.
+    synchronize: process.env.TYPEORM_SYNC === 'true' ? true : false,
   };
 };
