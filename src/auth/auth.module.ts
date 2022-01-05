@@ -13,7 +13,7 @@ import { UserRepository } from './user.repository';
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync({
       inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
+      useFactory: async (config: ConfigService) => ({
         secret: config.get<string>('JWT_SECRET_KEY'),
         signOptions: { expiresIn: config.get<string>('JWT_EXPIRES_IN') },
       }),
