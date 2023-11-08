@@ -8,8 +8,12 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { AuthCredentialsDto } from './dto/auth.credentials.dto';
-import { GetUser } from './get-user.decorator';
+import { CurrentUser } from './decorators/current-user.decorator';
 import { User } from './user.entity';
+import { Serialize } from '../interceptors/serialize.interceptor';
+import { UserDto } from './dto/user.dto';
+// import { Authorize } from '../interceptors/authorize.interceptor';
+import { AuthorizeGuard } from '../guards/authorize.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -30,8 +34,12 @@ export class AuthController {
   }
 
   @Post('/test')
-  @UseGuards(AuthGuard())
-  test(@GetUser() user: User) {
-    console.log(user);
+  @UseGuards(AuthGuard(), new AuthorizeGuard(['admin', 'zeemag']))
+  // @Authorize(['admin', 'zeemag'])
+  // @UseInterceptors(new SerializeInterceptor(UserDto)) // This is a bit long
+  @Serialize(UserDto)
+  test(@CurrentUser() user: User): User {
+    console.log('handler is running');
+    return user;
   }
 }

@@ -6,11 +6,13 @@ import { TasksModule } from './tasks/tasks.module';
 import { AuthModule } from './auth/auth.module';
 import { configuration } from './config/configuration';
 import { validationSchema } from './config/validation';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+      envFilePath: `.env.${process.env.NODE_ENV}`,
       load: [configuration],
       validationSchema,
     }),
@@ -18,5 +20,6 @@ import { validationSchema } from './config/validation';
     TasksModule,
     AuthModule,
   ],
+  controllers: [AppController],
 })
 export class AppModule {}

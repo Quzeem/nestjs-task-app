@@ -38,7 +38,7 @@ export class TaskRepository extends Repository<Task> {
         }" tasks with filters: ${JSON.stringify(filterDto)}`,
         error.stack,
       );
-      // we stll want nextjs to catch the error and return 500
+      // we still want nestjs to catch the error and return 500
       throw new InternalServerErrorException();
     }
   }

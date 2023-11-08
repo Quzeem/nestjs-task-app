@@ -14,7 +14,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { GetUser } from '../auth/get-user.decorator';
+import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { User } from '../auth/user.entity';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { GetTasksFilterDto } from './dto/get-tasks-filter.dto';
@@ -22,6 +22,7 @@ import { TaskStatusValidationPipe } from './pipes/task-status-validation.pipe';
 import { TaskStatus } from './task-status.enum';
 import { Task } from './task.entity';
 import { TasksService } from './tasks.service';
+// import { AuthorizeGuard } from '../guards/authorize.guard';
 
 @Controller('tasks')
 @UseGuards(AuthGuard())
@@ -31,9 +32,10 @@ export class TasksController {
   constructor(private tasksService: TasksService) {}
 
   @Get()
+  // @UseGuards(new AuthorizeGuard(['admin', 'zeemag']))
   getTasks(
     @Query(ValidationPipe) filterDto: GetTasksFilterDto,
-    @GetUser() user: User,
+    @CurrentUser() user: User,
   ): Promise<Task[]> {
     this.logger.verbose(
       `User "${
@@ -46,7 +48,7 @@ export class TasksController {
   @Get('/:id')
   getTaskById(
     @Param('id', ParseIntPipe) id: number,
-    @GetUser() user: User,
+    @CurrentUser() user: User,
   ): Promise<Task> {
     return this.tasksService.getTaskById(id, user);
   }
@@ -55,7 +57,7 @@ export class TasksController {
   @UsePipes(ValidationPipe)
   createTask(
     @Body() createTaskDto: CreateTaskDto,
-    @GetUser() user: User,
+    @CurrentUser() user: User,
   ): Promise<Task> {
     return this.tasksService.createTask(createTaskDto, user);
   }
@@ -64,7 +66,7 @@ export class TasksController {
   updateTaskStatus(
     @Param('id', ParseIntPipe) id: number,
     @Body('status', TaskStatusValidationPipe) status: TaskStatus,
-    @GetUser() user: User,
+    @CurrentUser() user: User,
   ): Promise<Task> {
     return this.tasksService.updateTaskStatus(id, status, user);
   }
@@ -72,7 +74,7 @@ export class TasksController {
   @Delete('/:id')
   deleteTask(
     @Param('id', ParseIntPipe) id: number,
-    @GetUser() user: User,
+    @CurrentUser() user: User,
   ): Promise<void> {
     return this.tasksService.deleteTask(id, user);
   }
