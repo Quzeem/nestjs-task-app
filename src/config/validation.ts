@@ -10,5 +10,5 @@ export const validationSchema = Joi.object({
   DB_NAME: Joi.string().required(),
   JWT_SECRET_KEY: Joi.string().required(),
   JWT_EXPIRES_IN: Joi.string().required(),
-  TYPEORM_SYNC: Joi.boolean().required(),
+  // TYPEORM_SYNC: Joi.boolean().required(),
 });

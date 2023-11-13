@@ -11,6 +11,6 @@ export const configuration = () => {
     },
     jwtSecretKey: process.env.JWT_SECRET_KEY,
     jwtExpiresIn: process.env.JWT_EXPIRES_IN,
-    typeOrmSync: process.env.TYPEORM_SYNC,
+    // typeOrmSync: process.env.TYPEORM_SYNC,
   };
 };
